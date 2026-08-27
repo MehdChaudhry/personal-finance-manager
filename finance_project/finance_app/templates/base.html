@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Finance Manager{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <style>
+        .btn-custom-blue {
+            background-color: #007BFF; /* Custom blue color */
+            color: white; /* White text color */
+            border: none; /* Remove border */
+        }
+        .btn-custom-blue:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Custom sliding animation for the dropdown */
+        .dropdown-menu {
+            display: none; /* Hide dropdown by default */
+            transition: all 0.3s ease; /* Smooth transition */
+            transform: translateY(10px); /* Slight downwards position */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for a smoother look */
+            border-radius: 4px; /* Rounded corners */
+        }
+
+        .dropdown-menu.show {
+            display: block; /* Show dropdown when 'show' class is added */
+            transform: translateY(0); /* Slide up to original position */
+        }
+
+        /* Add padding and custom look for the dropdown items */
+        .dropdown-menu .dropdown-item {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .navbar-nav {
+            margin-left: auto; /* Align navbar items to the right */
+        }
+
+        /* Ensure the dropdown is properly aligned */
+        .dropdown {
+            position: relative;
+        }
+
+        .navbar-toggler-icon {
+            background-color: white;
+        }
+
+        /* Add margin to the content area to avoid overlap with the navbar */
+        .content-area {
+            margin-top: 80px; /* Adjust this value to your preference */
+        }
+    </style>    
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">Finance Manager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Menu
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'all_transactions' %}">View All Transactions</a>
+                            <a class="dropdown-item" href="{% url 'add_transaction' %}">Add Transaction</a>
+                            <a class="dropdown-item" href="{% url 'totals_by_category' %}">View Totals by Category</a>
+                            <a class="dropdown-item" href="{% url 'view_accounts' %}">View All Accounts</a>
+                            <a class="dropdown-item" href="{% url 'add_account' %}">Add Account</a>
+                            <a class="dropdown-item" href="{% url 'create_budget' %}">Create Monthly Budget</a>
+                            <a class="dropdown-item" href="{% url 'add_task' %}">Create Task</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <span class="navbar-text" style="text-decoration: underline;">Logged in as {{ user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link">Log out</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Log in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4 content-area">
+        {% block content %}
+            {% if messages %}
+                <div class="alert alert-success" role="alert">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endblock %}
+    </div>
+
+    <!-- jQuery (required for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Popper.js (required for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        // jQuery for toggling the sliding dropdown
+        $(document).ready(function() {
+            // When the dropdown button is clicked
+            $('.dropdown-toggle').click(function() {
+                var $dropdownMenu = $(this).next('.dropdown-menu');
+                
+                // Slide down/up the dropdown
+                if ($dropdownMenu.hasClass('show')) {
+                    $dropdownMenu.removeClass('show').slideUp();
+                } else {
+                    $dropdownMenu.addClass('show').stop(true, true).slideDown();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+

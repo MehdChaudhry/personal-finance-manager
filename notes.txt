@@ -1,0 +1,42 @@
+#Connect to database using the image id of database
+
+docker exec -it 3dc0ee14d6a0 psql -U postgres
+
+# connect to the database
+
+\c financeDB
+
+# Insert Data into User Table
+
+INSERT INTO finance_app_user (username, password, firstname, lastname, email)
+VALUES ('testuser', 'password123', 'Test', 'User', 'testuser@example.com');
+
+# Insert Data into Transaction Table
+
+INSERT INTO finance_app_transaction (user_id, value, category, description, date, transaction_type)
+VALUES ((SELECT id FROM finance_app_user WHERE username='testuser'), 50.75, 'Food', 'Grocery shopping', '2023-10-01', 'Expense');
+
+INSERT INTO finance_app_transaction (user_id, value, category, description, date, transaction_type)
+VALUES ((SELECT id FROM finance_app_user WHERE username='testuser'), 100.75, 'Transport', 'Bus ticket', '2023-10-02', 'Expense');
+
+
+Delete Previous Data from database:
+docker exec -it 86c201301374 python manage.py shell
+
+from django.contrib.auth.models import User
+from finance_app.models import Transaction, Account
+from finance_app.models import Budget, Budgetcategory
+
+Transaction.objects.all().delete()
+Account.objects.all().delete()
+User.objects.all().delete()
+Budget.objects.all().delete()
+Budgetcategory.objects.all().delete()
+
+DROP TABLE IF EXISTS finance_app_budget CASCADE;
+
+CREATE TABLE finance_app_budget (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES auth_user(id) ON DELETE CASCADE
+);

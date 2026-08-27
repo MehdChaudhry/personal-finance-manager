@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Accounts{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Your Accounts</h1>
+    <div class="row">
+        {% for account in accounts %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ account.account_type }}</h5>
+                    <p class="card-text">Balance: <span class="text-success">${{ account.balance }}</span></p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'view_account_details' account.id %}" class="btn btn-primary">View Transactions</a>
+                        <form method="post" action="{% url 'delete_account' account.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this account?');">Delete Account</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center">No accounts available.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="text-center mt-4">
+    <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+</div>
+</div>
+{% endblock %}

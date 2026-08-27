@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Account Details{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Account: {{ account.account_type }}</h2>
+    <p>Balance: ${{ account.balance }}</p>
+
+    <h3>Transactions:</h3>
+    <ul>
+        {% for transaction in transactions %}
+            <li>{{ transaction.date }} - {{ transaction.description }}: ${{ transaction.value }}</li>
+        {% empty %}
+            <li>No transactions available for this account.</li>
+        {% endfor %}
+    </ul>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="delete" class="btn btn-danger">Delete Account</button>
+        <a href="{% url 'view_accounts' %}" class="btn btn-secondary">Back to Accounts</a>
+    </form>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}All Transactions{% endblock %}
+
+{% block content %}
+    <h1>All Transactions</h1>
+
+    <form method="get" action="{% url 'all_transactions' %}">
+        <label for="filter">Filter Transactions:</label>
+        <select name="filter" id="filter" onchange="this.form.submit()">
+            <option value="all" {% if filter_option == 'all' %}selected{% endif %}>All</option>
+            <option value="last_day" {% if filter_option == 'last_day' %}selected{% endif %}>Last Day</option>
+            <option value="last_7_days" {% if filter_option == 'last_7_days' %}selected{% endif %}>Last 7 Days</option>
+            <option value="last_30_days" {% if filter_option == 'last_30_days' %}selected{% endif %}>Last 30 Days</option>
+        </select>
+    </form>
+
+    {% if transactions %}
+        <h2>Transactions</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Value</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.category }}</td>
+                    <td>{{ transaction.description }}</td>
+                    <td>{{ transaction.value }}</td>
+                    <td>{{ transaction.transaction_type }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No transactions available for the selected filter.</p>
+    {% endif %}
+{% endblock %}

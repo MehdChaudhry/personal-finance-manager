@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Your Budgets</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .budget-card {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .budget-header {
+            font-size: 1.5rem;
+            color: #343a40;
+        }
+        .budget-details {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+        .no-budgets {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #dc3545; /* Bootstrap danger color */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Your Budgets</h1>
+    <div class="row">
+        {% if budgets %}
+            {% for budget in budgets %}
+                <div class="col-md-4">
+                    <div class="card budget-card">
+                        <div class="card-body">
+                            <h5 class="budget-header">{{ budget }}</h5>
+                            <p class="budget-details">Amount: <strong>${{ budget.budget_amount }}</strong></p>
+                            <p class="budget-details">From: <strong>{{ budget.start_date }}</strong> to <strong>{{ budget.end_date }}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <p class="no-budgets">No budgets found.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
