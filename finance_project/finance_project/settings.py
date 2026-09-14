@@ -61,7 +61,6 @@ ROOT_URLCONF = 'finance_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
         'DIRS': [BASE_DIR / 'templates'],
         'OPTIONS': {
@@ -84,16 +83,13 @@ WSGI_APPLICATION = 'finance_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'financeDB',
-        'USER': 'postgres',
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': 'host.docker.internal',
+        'NAME': os.environ.get('POSTGRES_DB', 'financeDB'),
+        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
-
-# Dont delete this and next line. 
-# 'host.docker.internal' 
 
 
 # Password validation
