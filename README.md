@@ -78,7 +78,7 @@ My responsibilities included:
 
 The requirements below document the functionality that was planned for the application throughout development.
 
-## Requirements
+## Functional Requirements
 
 ### FR-001: User Registration
 **Rationale:** Enables users to create a secure, personalized account, ensuring their transactions and financial data are stored and accessed safely.
